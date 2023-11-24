@@ -10,18 +10,18 @@ import {
 } from 'react-native';
 import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import ProductDetail from './ProductDetail';
-import Cart from './Cart';
+
 import axiosInstance from '../utils/axios';
-import ProductCreate from './ProductCreate';
+import { useProductStore } from '../utils/store';
 
-const Products = () => {
+const Products = props => {
   const {navigate, setOptions} = useNavigation();
-  const [products, setProducts] = useState([]);
-
+  //const [products, setProducts] = useState([]);
+  const {products,setProducts}=useProductStore()
   const axiosProducts = () => {
     axiosInstance.get('products').then(response => {
       setProducts(response.data);
+      //console.log('response', response.data);
     });
   };
   useLayoutEffect(() => {
@@ -47,9 +47,7 @@ const Products = () => {
         renderItem={({item}) => {
           return (
             <TouchableOpacity
-              onPress={() =>
-                navigate('ProductDetail', {id: item?.id})
-              }>
+              onPress={() => navigate('ProductDetail', {id: item?.id})}>
               <View style={styles.productContainer}>
                 <Image
                   style={{width: 150, height: 150}}

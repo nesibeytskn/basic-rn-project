@@ -13,12 +13,16 @@ import {
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import axiosInstance from '../utils/axios';
+import {useDetailStore} from '../utils/store';
+import {useCartsStore} from '../utils/store';
 
 const ProductDetail = () => {
   const dimension = Dimensions.get('window');
-  const [product, setProduct] = useState({});
+  //const [product, setProduct] = useState({});
+  const {product, setProduct} = useDetailStore();
   const {params} = useRoute();
   const {navigate} = useNavigation();
+  const {addCartItem} = useCartsStore();
   //console.log('route', params, product);
 
   const fetchProducts = () => {
@@ -26,11 +30,13 @@ const ProductDetail = () => {
       setProduct(response.data);
     });
   };
-  const addCarts = () => {
-    axiosInstance
+  const addCarts = async () => {
+    const response = await axiosInstance
       .post('carts', product)
       .then(response => {
         if (response.status === 201 && response.data) {
+          addCartItem(product);
+         
           Alert.alert('başarılı', 'sepete eklendi');
         }
       })

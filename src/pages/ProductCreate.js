@@ -1,9 +1,11 @@
 import {StyleSheet, Text, View, TextInput, Button, Alert} from 'react-native';
 import React, {useState} from 'react';
 import axiosInstance from '../utils/axios';
+import {useCreateStore} from '../utils/store';
 
 const ProductCreate = () => {
-  const [product, setProduct] = useState({
+  {
+    /*const [product, setProduct] = useState({
     title: '',
     description: '',
     price: 0,
@@ -20,20 +22,23 @@ const ProductCreate = () => {
       'https://i.dummyjson.com/data/products/1/4.jpg',
       'https://i.dummyjson.com/data/products/1/thumbnail.jpg',
     ],
-  });
+  });*/
+  }
+  const {product, setProduct, textChange} = useCreateStore();
 
-  const productCreate = () => {
-    axiosInstance.post('products', product).then(response => {
+  const productCreate = async () => {
+    await axiosInstance.post('products', product).then(response => {
       const {data, status} = response;
       if (status === 200) {
+        setProduct(product);
         Alert.alert('başarılı', `ürün eklendi ${data.title}`);
       }
-      
     });
   };
 
   const onChangeText = (key, value) => {
-    setProduct({...product, [key]: value});
+    //setProduct({...product, [key]: value});
+    textChange(key, value);
   };
   return (
     <View style={styles.container}>

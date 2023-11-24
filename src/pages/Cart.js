@@ -3,11 +3,13 @@ import React, {useEffect, useState} from 'react';
 import axiosInstance from '../utils/axios';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
+import {useCartsStore} from '../utils/store';
 
 const Cart = () => {
-  const [carts, setCarts] = useState([]);
+  //const [carts, setCarts] = useState([]);
   const {navigate} = useNavigation();
-
+  const {carts, setCarts,  deleteCartItem, clearCart} =
+    useCartsStore();
   const fetchCarts = () => {
     axiosInstance.get('carts').then(response => {
       const {status, data} = response;
@@ -27,12 +29,13 @@ const Cart = () => {
         const {status} = response;
         if (status === 200) {
           fetchCarts();
+          deleteCartItem(cartsId);
         }
       })
       .catch(error => console.log(error));
   };
 
-  const renderCarts =
+  const renderCarts = () =>
     carts && carts?.length > 0 ? (
       carts.map(cart => (
         <View
@@ -72,7 +75,7 @@ const Cart = () => {
     );
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
-      <View>{renderCarts}</View>
+      <View>{renderCarts()}</View>
     </ScrollView>
   );
 };

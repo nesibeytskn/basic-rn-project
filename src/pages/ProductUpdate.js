@@ -1,19 +1,35 @@
 import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axiosInstance from '../utils/axios';
+import {useUpdateStore} from '../utils/store';
+import {useNavigation} from '@react-navigation/native';
 
 const ProductUpdate = props => {
-  const [product, setProduct] = useState(props?.route?.params);
+  const navigation = useNavigation();
+  //const [product, setProduct] = useState(props?.route?.params);
+  //const {textChange} = useUpdateStore();
 
+  const {updateProduct, product, textChange} = useUpdateStore();
+  //const updateProduct = useUp} = useUpdateStore();
   const onChangeText = (key, value) => {
-    setProduct({...product, [key]: value});
-  };
+    //setProduct({...product, [key]: value});
 
-  function productUpdate() {
-    axiosInstance.put(`products/${product.id}`, product).then(response => {
-      console.log(response);
-    });
-  }
+    textChange(key, value);
+  };
+  useEffect(() => {
+    // Komponent yüklendiğinde ürünü güncelle
+    updateProduct(props);
+  }, [updateProduct, props]);
+
+  const productUpdate = async () => {
+    const response = await axiosInstance
+      .put(`products/${product.id}`, product)
+      .then(response => {
+        console.log(response);
+        updateProduct(response.data);
+      })
+      .then(() => navigation.navigate('Products'));
+  };
   return (
     <View>
       <View style={styles.inputContainer}>
