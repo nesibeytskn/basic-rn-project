@@ -1,9 +1,19 @@
-import {StyleSheet, Text, View, TextInput, Button, Alert} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  Alert,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import React, {useState} from 'react';
 import axiosInstance from '../utils/axios';
 import {useCreateStore} from '../utils/store';
+import Icon from 'react-native-vector-icons/Ionicons'
 
-const ProductCreate = () => {
+const ProductCreate = ({navigation}) => {
   {
     /*const [product, setProduct] = useState({
     title: '',
@@ -42,61 +52,78 @@ const ProductCreate = () => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Title"
-          onChangeText={text => onChangeText('title', text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Description"
-          onChangeText={text => onChangeText('description', text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Price"
-          onChangeText={text => onChangeText('price', text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="DiscountPercentage"
-          onChangeText={text => onChangeText('discountPercentage', text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Rating"
-          onChangeText={text => onChangeText('rating', text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Stock"
-          onChangeText={text => onChangeText('stock', text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Brand"
-          onChangeText={text => onChangeText('brand', text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Category"
-          defaultValue="SmartPhone"
-          onChangeText={text => onChangeText('category', text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Thumbnail"
-          onChangeText={text => onChangeText('thumbnail', text)}
-          value={product.thumbnail}
-        />
-        {/*<TextInput
+      <SafeAreaView style={{flex: 1}}>
+      <View style={{padding:20}}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon
+                name={'chevron-back-outline'}
+                size={25}
+                style={{color: 'black'}}
+              />
+            </TouchableOpacity>
+          </View>
+        <View style={styles.container}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Title"
+              onChangeText={text => onChangeText('title', text)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Description"
+              onChangeText={text => onChangeText('description', text)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Price"
+              onChangeText={text => onChangeText('price', text)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="DiscountPercentage"
+              onChangeText={text => onChangeText('discountPercentage', text)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Rating"
+              onChangeText={text => onChangeText('rating', text)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Stock"
+              onChangeText={text => onChangeText('stock', text)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Brand"
+              onChangeText={text => onChangeText('brand', text)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Category"
+              defaultValue="SmartPhone"
+              onChangeText={text => onChangeText('category', text)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Thumbnail"
+              onChangeText={text => onChangeText('thumbnail', text)}
+              value={product.thumbnail}
+            />
+            {/*<TextInput
           style={styles.input}
           placeholder="Images"
           onChangeText={text => onChangeText('images', text)}
-  />*/}
-      </View>
-      <Button title="ürün ekle" onPress={() => productCreate()} />
+        />*/}
+          </View>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => productCreate()}>
+            <Text style={styles.buttonText}>Ürünü Ekle</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
     </View>
   );
 };
@@ -107,7 +134,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#A2ADCB',
     padding: 20,
   },
   input: {
@@ -123,5 +150,21 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 10,
     borderColor: 'gray',
+  },
+  buttonContainer: {
+    borderWidth: 1,
+
+    backgroundColor: '#665B75',
+
+    marginVertical: 10,
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });

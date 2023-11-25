@@ -15,8 +15,9 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import axiosInstance from '../utils/axios';
 import {useDetailStore} from '../utils/store';
 import {useCartsStore} from '../utils/store';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const ProductDetail = () => {
+const ProductDetail = ({navigation}) => {
   const dimension = Dimensions.get('window');
   //const [product, setProduct] = useState({});
   const {product, setProduct} = useDetailStore();
@@ -36,7 +37,7 @@ const ProductDetail = () => {
       .then(response => {
         if (response.status === 201 && response.data) {
           addCartItem(product);
-         
+
           Alert.alert('başarılı', 'sepete eklendi');
         }
       })
@@ -61,39 +62,72 @@ const ProductDetail = () => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.image}
-          source={{uri: product?.thumbnail}}
-          resizeMode="cover"
-        />
-      </View>
+      <SafeAreaView style={{flex: 1}}>
+        <View
+          style={{
+            paddingBottom:20,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View style={{}}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon
+                name={'chevron-back-outline'}
+                size={25}
+                style={{color: 'black'}}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
 
-      <Text style={styles.brandText}>
-        {product?.brand} {product?.title}
-      </Text>
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.image}
+            source={{uri: product?.thumbnail}}
+            resizeMode="cover"
+          />
+        </View>
 
-      <View>
-        <Text style={styles.descriptionText}>{product?.description}</Text>
-        <Text>
-          {product?.price}TL {product?.discountPercentage}%
+        <Text style={styles.brandText}>
+          {product?.brand} {product?.title}
         </Text>
-      </View>
-      <View>
-        <FlatList
-          style={{gap: 10}}
-          data={product?.images}
-          renderItem={_renderItem}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
-      <Button title="Sepete ekle" onPress={() => addCarts()} />
-      <Button
-        title="Ürünü Güncelle"
-        onPress={() => navigate('ProductUpdate', product)}
-      />
+
+        <View>
+          <Text style={styles.descriptionText}>{product?.description}</Text>
+          <Text>
+            {product?.price}TL {product?.discountPercentage}%
+          </Text>
+        </View>
+        <View style={{paddingVertical: 10}}>
+          <FlatList
+            style={{gap: 10}}
+            data={product?.images}
+            renderItem={_renderItem}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 10,
+            paddingTop: 10,
+          }}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => addCarts()}>
+            <Text style={styles.buttonText}>Sepete ekle</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => navigate('ProductUpdate', product)}>
+            <Text style={styles.buttonText}>Ürünü Güncelle</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
     </View>
   );
 };
@@ -104,17 +138,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
 
-    backgroundColor: '#fff',
+    backgroundColor: '#706F9B',
+    padding: 10,
+    paddingHorizontal: 10,
   },
   imageContainer: {
+    borderRadius: 10,
     width: 430,
     height: 300,
   },
   image: {
+    borderRadius: 10,
     width: '100%',
     height: 300,
   },
   thumbnailcon: {
+    borderRadius: 10,
     width: ' 100%',
     height: 200,
     backgroundColor: '',
@@ -123,6 +162,7 @@ const styles = StyleSheet.create({
   thumbnail: {
     width: Dimensions.get('window').width,
     height: 200,
+    
   },
   brandText: {
     fontSize: 16,
@@ -134,5 +174,21 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     color: '#000',
+  },
+  buttonContainer: {
+    borderWidth: 1,
+
+    backgroundColor: '#665B75',
+
+    marginVertical: 10,
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });

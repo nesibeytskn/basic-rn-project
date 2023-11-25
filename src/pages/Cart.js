@@ -1,15 +1,23 @@
-import {Button, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axiosInstance from '../utils/axios';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 import {useCartsStore} from '../utils/store';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Cart = () => {
   //const [carts, setCarts] = useState([]);
   const {navigate} = useNavigation();
-  const {carts, setCarts,  deleteCartItem, clearCart} =
-    useCartsStore();
+  const {carts, setCarts, deleteCartItem, clearCart} = useCartsStore();
   const fetchCarts = () => {
     axiosInstance.get('carts').then(response => {
       const {status, data} = response;
@@ -63,23 +71,49 @@ const Cart = () => {
             <Text>{cart.quantity}</Text>
             <Text>{cart.total}</Text>
           </View>
-
-          <Button title={'sil'} onPress={() => deleteCart(cart.id)} />
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => deleteCart(cart.id)}>
+            <Text style={styles.buttonText}>Sil</Text>
+          </TouchableOpacity>
         </View>
       ))
     ) : (
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
         <Text>Sepetiniz boştur lütfen ürün sayfasına bakınız</Text>
-        <Button title="ürünlere git" onPress={() => navigate('Products')} />
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={() => navigate('Products')}>
+          <Text style={styles.buttonText}>Ürünlere Git</Text>
+        </TouchableOpacity>
       </View>
     );
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
-      <View>{renderCarts()}</View>
+    <ScrollView style={{flex: 1, backgroundColor: '#8998C5', padding: 20}}>
+      <SafeAreaView style={{flex: 1}}>
+        <View>{renderCarts()}</View>
+      </SafeAreaView>
     </ScrollView>
   );
 };
 
 export default Cart;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  buttonContainer: {
+    borderWidth: 1,
+
+    backgroundColor: '#665B75',
+
+    marginVertical: 10,
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+});
