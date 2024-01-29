@@ -6,18 +6,21 @@ import {
   Text,
   TouchableOpacity,
   View,
+  SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axiosInstance from '../utils/axios';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 import {useCartsStore} from '../utils/store';
-import {SafeAreaView} from 'react-native-safe-area-context';
+
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const Cart = () => {
   //const [carts, setCarts] = useState([]);
-  const {navigate} = useNavigation();
+  const navigation = useNavigation();
   const {carts, setCarts, deleteCartItem, clearCart} = useCartsStore();
+
   const fetchCarts = () => {
     axiosInstance.get('carts').then(response => {
       const {status, data} = response;
@@ -83,7 +86,7 @@ const Cart = () => {
         <Text>Sepetiniz boştur lütfen ürün sayfasına bakınız</Text>
         <TouchableOpacity
           style={styles.buttonContainer}
-          onPress={() => navigate('Products')}>
+          onPress={() => navigation.navigate('Products')}>
           <Text style={styles.buttonText}>Ürünlere Git</Text>
         </TouchableOpacity>
       </View>
@@ -91,6 +94,15 @@ const Cart = () => {
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#8998C5', padding: 20}}>
       <SafeAreaView style={{flex: 1}}>
+        <View style={{}}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon
+              name={'chevron-back-outline'}
+              size={25}
+              style={{color: 'black'}}
+            />
+          </TouchableOpacity>
+        </View>
         <View>{renderCarts()}</View>
       </SafeAreaView>
     </ScrollView>

@@ -13,12 +13,13 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import axiosInstance from '../utils/axios';
-import {useProductStore} from '../utils/store';
+import {useCartsStore, useProductStore} from '../utils/store';
 
 const Products = props => {
   const {navigate, setOptions} = useNavigation();
-  //const [products, setProducts] = useState([]);
+
   const {products, setProducts} = useProductStore();
+  const {addCartItem} = useCartsStore();
   const axiosProducts = () => {
     axiosInstance.get('products').then(response => {
       setProducts(response.data);
@@ -51,16 +52,34 @@ const Products = props => {
     <SafeAreaView style={styles.container}>
       <View
         style={{
-          padding: 10,
+          padding: 20,
           flexDirection: 'row',
           justifyContent: 'space-between',
+          alignItems: 'center',
         }}>
-        <View style={{}}>
+        <View style={{alignItems: 'center', justifyContent: 'space-between'}}>
           <TouchableOpacity onPress={() => navigate('ProductCreate')}>
             <Icon name={'add'} size={25} style={{color: 'black'}} />
           </TouchableOpacity>
         </View>
-        <View style={{}}>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+          }}>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'blue',
+              borderRadius: 10,
+              width: 20,
+            }}>
+            <Text style={{color:'#fff'}} key={products.id}>
+              {useCartsStore.getState().items}
+            </Text>
+          </View>
           <TouchableOpacity onPress={() => navigate('Cart')}>
             <Icon name={'cart-outline'} size={25} style={{color: 'black'}} />
           </TouchableOpacity>
